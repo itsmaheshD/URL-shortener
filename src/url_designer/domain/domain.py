@@ -9,7 +9,7 @@ class OriginalUrl:
 
         if parse_url.scheme not in ["http","https"]:
             raise ValueError("URL must use HTTP or HTTPS.")
-        if parse_url.netloc !="":
+        if not parse_url.netloc:
             raise ValueError("URL must contain a host.")
 
 
