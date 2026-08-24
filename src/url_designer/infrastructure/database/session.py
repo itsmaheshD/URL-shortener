@@ -11,4 +11,5 @@ engine=create_engine(
 
 def get_session():
     with Session(engine)as session:
+        print(session)
         yield session
