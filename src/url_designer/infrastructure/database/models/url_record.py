@@ -1,17 +1,21 @@
-from sqlmodel import Field,SQLModel
-from datetime import datetime
+from datetime import datetime, timezone
 
-class UrlRecord(SQLModel):
-    id:int |None = Field(default=None, primary_key=True)
+from sqlmodel import Field, SQLModel
 
-    original_url:str|None =Field(default=None)
 
-    short_code_url:str = Field(
+class UrlRecord(SQLModel, table=True):
+    """Persisted representation of a shortened URL."""
+
+    id: int | None = Field(default=None, primary_key=True)
+
+    original_url: str | None = Field(default=None)
+
+    short_code_url: str = Field(
         index=True,
         unique=True
     )
 
-    created_at:datetime = Field(
+    created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
     )
 
