@@ -33,7 +33,7 @@ class Base62Service:
 
         for character in value:
             if character not in self._ALPHABET:
-                raise ValueError(fInvalid Base62 character: {character!r}")
+                raise ValueError(f"Invalid Base62 character: {character!r}")
 
             number = number * self._BASE + self._ALPHABET.index(character)
 
