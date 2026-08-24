@@ -1,4 +1,4 @@
-from url_designer.services.base62 import Base62Secvice
+from url_designer.services.base62 import Base62Service
 
 import pytest
 

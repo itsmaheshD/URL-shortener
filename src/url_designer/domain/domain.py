@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 class OriginalUrl:
     def __init__(self,url:str):
-        self.url=url
+        self.value=url
         self.validate_url(url)
 
     def validate_url(self,url:str) -> None:
