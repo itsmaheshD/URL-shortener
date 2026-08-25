@@ -1,37 +1,58 @@
-from fastapi import APIRouter, Depends, status, HTTPException
-from url_designer.api.dependency import get_url_service
+from fastapi import APIRouter, Depends, status
+from fastapi.responses import RedirectResponse
 
+from url_designer.api.dependency import get_url_service
 from url_designer.api.schemas.url import (
-         CreateRequest,
-         CreateResponse
+    CreateURLRequest,
+    CreateURLResponse,
 )
 from url_designer.application.services.url_service import URLService
 
+
 router = APIRouter(
-    prefix="/url",
-    tags=["Url Designer"],
+
 )
+
 
 @router.post(
-    "",
-    response_model=CreateResponse,
+    "/url",
+    response_model=CreateURLResponse,
     status_code=status.HTTP_201_CREATED,
 )
-def create_url(
-        url_service: URLService = Depends(get_url_service),
-        request: CreateRequest = Depends(CreateRequest),
-)->CreateResponse:
-    """creating short url"""
-    result= url_service.create_short_url(
-        str(
-            request.original_url
-        )
-    )
-    if result.id is None or result.short_code_url is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+def create_short_url(
+    request: CreateURLRequest,
+    service: URLService = Depends(get_url_service),
+) -> CreateURLResponse:
+    """Create a shortened URL."""
 
-    return  CreateResponse(
+    result = service.create_short_url(
+        str(request.original_url),
+    )
+
+    if result.id is None:
+        raise RuntimeError("URL record was not assigned an identifier.")
+
+    return CreateURLResponse(
         id=result.id,
-        short_code=result.short_code_url,
-        original_url=result.original_url
+        original_url=result.original_url or "",
+        short_code_url=result.short_code_url or "",
+    )
+
+@router.get(
+    "/{short_code_url}",
+    status_code=302,
+)
+def redirect_to_original_url(
+    short_code_url: str,
+    service: URLService = Depends(get_url_service),
+) -> RedirectResponse:
+    """Redirect a short URL to its original URL."""
+
+    original_url = service.get_original_url(
+        short_code_url,
+    )
+
+    return RedirectResponse(
+        url=original_url,
+        status_code=302,
     )

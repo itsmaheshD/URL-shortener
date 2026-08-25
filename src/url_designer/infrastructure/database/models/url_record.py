@@ -11,7 +11,6 @@ class UrlRecord(SQLModel, table=True):
     original_url: str | None = Field(default=None)
 
     short_code_url: str | None = Field(
-        default=None,
         index=True,
         unique=True
     )

@@ -1,7 +1,6 @@
 from string import ascii_uppercase, ascii_lowercase, digits
 
 
-
 class Base62Service:
     """Encode and decode non-negative integers using Base62."""
 
@@ -33,8 +32,13 @@ class Base62Service:
 
         for character in value:
             if character not in self._ALPHABET:
-                raise ValueError(f"Invalid Base62 character: {character!r}")
+                raise ValueError(
+                    f"Invalid Base62 character: {character!r}"
+                )
 
-            number = number * self._BASE + self._ALPHABET.index(character)
+            number = (
+                number * self._BASE
+                + self._ALPHABET.index(character)
+            )
 
         return number
