@@ -1,6 +1,6 @@
 import pytest
 
-from src.url_designer.domain import OriginalUrl
+from url_designer.domain import OriginalUrl
 
 
 def test_accepts_https_url() -> None:

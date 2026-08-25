@@ -8,6 +8,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
 class Settings(BaseSettings):
     database_url: str
+    test_database_url: str
+
 
     # Resolve the path from this source file instead of the process working
     # directory. This also works when session.py is run from an IDE.

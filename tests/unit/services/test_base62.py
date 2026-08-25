@@ -10,17 +10,17 @@ def test_encode_zero() -> None:
 
 
 def test_encode_known_values() -> None:
-    service = Base62Secvice()
+    service = Base62Service()
 
     assert service.encode(61) == "z"
     assert service.encode(62) == "10"
 
 
-def test_decode_knownn_values() -> None:
+def test_decode_known_values() -> None:
     service = Base62Service()
 
     assert service.decode("0") == 0
-    assert service.decode("Z") == 61
+    assert service.decode("Z") == 35
     assert service.decode("10") == 62
 
 

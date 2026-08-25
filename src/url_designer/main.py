@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from url_designer.api.routes.urls import router
+
 
 app=FastAPI(
     title= "URL Designer",
@@ -9,4 +11,6 @@ app=FastAPI(
 @app.get("/")
 def hello_word():
     return "hello word"
+
+app.include_router(router)
 
