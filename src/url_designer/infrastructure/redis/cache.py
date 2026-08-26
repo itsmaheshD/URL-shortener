@@ -18,8 +18,10 @@ class RedisCache:
 
         try:
             return self._client.get(key)
-        except RedisError:
+
+        except RedisError as errors_get_key:
             # Redis is a cache, so reads continue through PostgreSQL.
+            print("The redis get key error's", errors_get_key)
             return None
 
     def set(
@@ -42,8 +44,9 @@ class RedisCache:
                 value=value,
                 ex=ttl,
             )
-        except RedisError:
+        except RedisError as errors_set_key:
             # Cache failures must not break the application.
+            print("The redis set key error is ",errors_set_key)
             pass
 
     def delete(self, key: str) -> None:
