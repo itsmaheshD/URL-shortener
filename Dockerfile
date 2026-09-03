@@ -1,23 +1,30 @@
-#Use lght weight python image
+# Use lightweight Python image
 FROM python:3.14-slim
-#set working container directory
+
+# Set working directory inside the container
 WORKDIR /app
-#Installing the package manger UV
+
+# Install UV package manager
 RUN pip install --no-cache-dir uv
-#Copy dependecy files
-#Allowing Docker to cache dependency-installation layer
+
+# Copy dependency files first so Docker can cache dependency installation
 COPY pyproject.toml uv.lock ./
-#Install project dependncy's
+
+# Install project dependencies from the lock file
 RUN uv sync --frozen
 
-#Copy source code intocontainer
+# Copy application source code
 COPY src ./src
 
-#Mentioned the python application lives that is the path of code
-ENV  PYTHONPATH=/app/src
+# Copy Alembic configuration and migration files
+COPY alembic.ini ./
+COPY migrations ./migrations
 
-#Port
+# Tell Python where the application package lives
+ENV PYTHONPATH=/app/src
+
+# Expose FastAPI port
 EXPOSE 8000
 
-#Start the FastAPI application
-CMD ["uv","run","uvicorn","url_designer.main:app","--host","0.0.0.0","--port","8000"]
+# Start the FastAPI application
+CMD ["uv", "run", "uvicorn", "url_designer.main:app", "--host", "0.0.0.0", "--port", "8000"]
